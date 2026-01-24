@@ -6,19 +6,19 @@
 local M = {}
 
 M.base46 = {
-	theme = "onedark",
 
-	-- hl_override = {
-	-- 	Comment = { italic = true },
-	-- 	["@comment"] = { italic = true },
-	-- },
+  theme = "chadracula-evondev",
+
+  hl_override = {
+    Type = { bold = true, italic = false },
+    ["@comment"] = { italic = true },
+
+    --- https://neovim.io/doc/user/treesitter.html#treesitter-highlight-groups
+
+    ["@keyword"] = { italic = true },
+    ["@function.method"] = { italic = true },
+    ["@function.method.call"] = { bold = true }
+  }
 }
-
--- M.nvdash = { load_on_startup = true }
--- M.ui = {
---       tabufline = {
---          lazyload = false
---      }
--- }
 
 return M

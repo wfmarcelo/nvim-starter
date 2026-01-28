@@ -1,6 +1,6 @@
-local dap = require("dap")
+local dap = require "dap"
 
-local mason_path = vim.fn.stdpath("data") .. "/mason/packages/netcoredbg/netcoredbg"
+local mason_path = vim.fn.stdpath "data" .. "/mason/packages/netcoredbg/netcoredbg"
 
 local netcoredbg_adapter = {
   type = "executable",
@@ -61,4 +61,19 @@ map(
   "<leader>dt",
   "<Cmd>lua require('neotest').run.run({strategy = 'dap'})<CR>",
   { noremap = true, silent = true, desc = "debug nearest test" }
+)
+-- Run the nearest test (normal execution)
+map(
+  "n",
+  "<leader>rt",
+  "<Cmd>lua require('neotest').run.run()<CR>",
+  { noremap = true, silent = true, desc = "run nearest test" }
+)
+
+-- Run the current file
+map(
+  "n",
+  "<leader>rf",
+  "<Cmd>lua require('neotest').run.run(vim.fn.expand('%'))<CR>",
+  { noremap = true, silent = true, desc = "run current file" }
 )

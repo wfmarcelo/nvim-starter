@@ -43,37 +43,3 @@ dap.configurations.cs = {
   },
 }
 
-local map = vim.keymap.set
-
-local opts = { noremap = true, silent = true }
-
-map("n", "<F5>", "<Cmd>lua require'dap'.continue()<CR>", opts)
-map("n", "<F6>", "<Cmd>lua require('neotest').run.run({strategy = 'dap'})<CR>", opts)
-map("n", "<F9>", "<Cmd>lua require'dap'.toggle_breakpoint()<CR>", opts)
-map("n", "<F10>", "<Cmd>lua require'dap'.step_over()<CR>", opts)
-map("n", "<F11>", "<Cmd>lua require'dap'.step_into()<CR>", opts)
-map("n", "<F8>", "<Cmd>lua require'dap'.step_out()<CR>", opts)
--- map("n", "<F12>", "<Cmd>lua require'dap'.step_out()<CR>", opts)
-map("n", "<leader>dr", "<Cmd>lua require'dap'.repl.open()<CR>", opts)
-map("n", "<leader>dl", "<Cmd>lua require'dap'.run_last()<CR>", opts)
-map(
-  "n",
-  "<leader>dt",
-  "<Cmd>lua require('neotest').run.run({strategy = 'dap'})<CR>",
-  { noremap = true, silent = true, desc = "debug nearest test" }
-)
--- Run the nearest test (normal execution)
-map(
-  "n",
-  "<leader>rt",
-  "<Cmd>lua require('neotest').run.run()<CR>",
-  { noremap = true, silent = true, desc = "run nearest test" }
-)
-
--- Run the current file
-map(
-  "n",
-  "<leader>rf",
-  "<Cmd>lua require('neotest').run.run(vim.fn.expand('%'))<CR>",
-  { noremap = true, silent = true, desc = "run current file" }
-)

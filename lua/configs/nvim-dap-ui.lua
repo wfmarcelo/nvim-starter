@@ -31,16 +31,45 @@ vim.fn.sign_define("DapBreakpointRejected", {
   linehl = "DapBreakpoint",
   numhl = "DapBreakpoint",
 })
-
 -- default configuration
 dapui.setup {
+  icons = { expanded = "▾", collapsed = "▸", current_frame = "▸" },
+  mappings = {
+    expand = { "<CR>", "<2-LeftMouse>" },
+    open = "o",
+    remove = "d",
+    edit = "e",
+    repl = "r",
+    toggle = "t",
+  },
+  element_mappings = {},
   expand_lines = true,
-  controls = { enabled = true }, -- no extra play/step buttons
-  floating = { border = "rounded" },
+  force_buffers = true,
+  controls = {
+    enabled = true,
+    element = "repl", -- Added missing 'element'
+    icons = { -- Added missing 'icons'
+      pause = "",
+      play = "",
+      step_into = "",
+      step_over = "",
+      step_out = "",
+      step_back = "",
+      run_last = "",
+      terminate = "",
+    },
+  }, -- no extra play/step buttons
+ floating = {
+    border = "rounded",
+    max_height = nil,
+    max_width = nil,
+    mappings = { close = { "q", "<Esc>" } }, -- Added missing 'mappings'
+  },
   -- Set dapui window
   render = {
     max_type_length = 60,
     max_value_lines = 200,
+    indent = 1, -- Added missing 'indent'
   },
   -- Only one layout: just the "scopes" (variables) list at the bottom
   layouts = {
@@ -54,21 +83,3 @@ dapui.setup {
     },
   },
 }
-
-local map, opts = vim.keymap.set, { noremap = true, silent = true }
-
-map("n", "<leader>du", function()
-  dapui.toggle()
-end, { noremap = true, silent = true, desc = "Toggle DAP UI" })
-
-map({ "n", "v" }, "<leader>dw", function()
-  require("dapui").eval(nil, { enter = true })
-end, { noremap = true, silent = true, desc = "Add word under cursor to Watches" })
-
-map({ "n", "v" }, "Q", function()
-  require("dapui").eval()
-end, {
-  noremap = true,
-  silent = true,
-  desc = "Hover/eval a single value (opens a tiny window instead of expanding the full object) ",
-})

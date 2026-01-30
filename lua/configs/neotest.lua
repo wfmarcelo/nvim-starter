@@ -4,9 +4,6 @@ neotest.setup {
   adapters = {
     require "neotest-dotnet" {
       dap = { adapter_name = "netcoredbg" },
-      discovery_root = "project",
-      dotnet_additional_args = { "--settings .runsettings" },
-      fully_qualified_class_names = true,
     },
   },
   log_level = vim.log.levels.WARN,

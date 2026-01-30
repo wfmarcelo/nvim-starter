@@ -1,6 +1,16 @@
 return {
   -- 1. Utilities
   {
+    "stevearc/oil.nvim",
+    opts = {},
+    -- Optional dependencies
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    lazy = false, -- Load on startup so it can handle directory buffers
+    config = function()
+      require "configs.oil"
+    end,
+  },
+  {
     "nmac427/guess-indent.nvim",
     event = "BufReadPre",
     config = function()

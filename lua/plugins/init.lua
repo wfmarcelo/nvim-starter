@@ -25,6 +25,14 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" },
     opts = { signs = false },
   },
+  {
+    "mistweaverco/kulala.nvim",
+    ft = { "http", "rest" },
+    opts = require "configs.kulala",
+    config = function(_, opts)
+      require("kulala").setup(opts)
+    end,
+  },
 
   -- 2. Core LSP & Treesitter
   {

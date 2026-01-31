@@ -41,6 +41,19 @@ return {
   },
   { "seblyng/roslyn.nvim", ft = { "cs", "razor", "cshtml" } }, -- Removed lazy=false (ft is enough)
   { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate", opts = require "configs.treesitter" },
+  {
+    "aklt/plantuml-syntax",
+    ft = { "plantuml", "puml" },
+  },
+  {
+    "weirongxu/plantuml-previewer.vim",
+    ft = "plantuml",
+    dependencies = { "tyru/open-browser.vim" },
+    config = function()
+      -- This ensures the previewer works with the system plantuml
+      -- Manjaro's plantuml package usually handles the jar path automatically
+    end,
+  },
 
   -- 3. Debugging (DAP)
   {

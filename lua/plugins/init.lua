@@ -33,6 +33,14 @@ return {
       require("kulala").setup(opts)
     end,
   },
+  {
+    "iamcco/markdown-preview.nvim",
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    ft = { "markdown" },
+    build = function()
+      vim.fn["mkdp#util#install"]()
+    end,
+  },
 
   -- 2. Core LSP & Treesitter
   {
@@ -47,7 +55,7 @@ return {
       return require "configs.mason"
     end,
   },
-  { "seblyng/roslyn.nvim", ft = { "cs", "razor", "cshtml" } }, -- Removed lazy=false (ft is enough)
+  { "seblyng/roslyn.nvim", ft = { "cs", "razor", "aspnetcorerazor" } }, -- Removed lazy=false (ft is enough)
   { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate", opts = require "configs.treesitter" },
   {
     "aklt/plantuml-syntax",

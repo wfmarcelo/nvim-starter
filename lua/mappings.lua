@@ -115,3 +115,5 @@ map("n", "<leader>px", function()
     })
   end)
 end, { desc = "PlantUML: Export to custom path" })
+
+map("n", "<leader>mp", "<cmd>MarkdownPreviewToggle<cr>", { desc = "Markdown Preview" })

@@ -6,8 +6,14 @@ local options = {
     html = { "prettier" },
     cs = { "csharpier" },
     sql = { "sql_formatter" },
+    json = { "jq" },
   },
-
+  formatters = {
+    sql_formatter = {
+      -- Adiciona os argumentos para o executável
+      prepend_args = { "-c", '{"language": "tsql", "keywordCase": "upper"}' },
+    },
+  },
   format_on_save = {
     -- These options will be passed to conform.format()
     timeout_ms = 1000,

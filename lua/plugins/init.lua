@@ -119,4 +119,34 @@ return {
       vim.g.db_ui_use_nerd_fonts = 1
     end,
   },
+
+  -- 6. IA
+  {
+    "olimorris/codecompanion.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "hrsh7th/nvim-cmp", -- Optional: for completion
+    },
+    config = function()
+      require("codecompanion").setup {
+        adapters = {
+          ollama = require("codecompanion.adapters").use("ollama", {
+            schema = {
+              model = {
+                default = "qwen2.5-coder:3b", -- Matches the model we pulled
+              },
+            },
+          }),
+        },
+        strategies = {
+          chat = { adapter = "ollama" },
+          inline = { adapter = "ollama" },
+          agent = { adapter = "ollama" },
+        },
+      }
+    end,
+    -- Only load when you actually use AI to save startup time
+    cmd = { "CodeCompanion", "CodeCompanionChat", "CodeCompanionActions" },
+  },
 }

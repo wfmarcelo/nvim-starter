@@ -117,3 +117,14 @@ map("n", "<leader>px", function()
 end, { desc = "PlantUML: Export to custom path" })
 
 map("n", "<leader>mp", "<cmd>MarkdownPreviewToggle<cr>", { desc = "Markdown Preview" })
+
+-- AI: CodeCompanion
+map("n", "<leader>ac", "<cmd>CodeCompanionChat Toggle<cr>", { desc = "AI: Toggle Chat" })
+map("n", "<leader>aa", "<cmd>CodeCompanionActions<cr>", { desc = "AI: Actions" })
+map("v", "<leader>aa", "<cmd>CodeCompanionActions<cr>", { desc = "AI: Actions" })
+
+-- Inline assistant (asks the AI to modify the code directly in the buffer)
+map({ "n", "v" }, "<leader>ai", "<cmd>CodeCompanion<cr>", { desc = "AI: Inline Prompt" })
+
+-- Add the current selection to a chat buffer
+map("v", "<leader>as", "<cmd>CodeCompanionChat Add<cr>", { desc = "AI: Add to Chat" })

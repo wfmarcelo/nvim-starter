@@ -123,21 +123,24 @@ return {
   -- 6. IA
   {
     "olimorris/codecompanion.nvim",
+    event = "VeryLazy",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
-      "hrsh7th/nvim-cmp", -- Optional: for completion
     },
     config = function()
       require("codecompanion").setup {
         adapters = {
-          ollama = require("codecompanion.adapters").use("ollama", {
-            schema = {
-              model = {
-                default = "qwen2.5-coder:3b", -- Matches the model we pulled
+          -- We define the adapter directly to avoid the .use() nil error
+          ollama = function()
+            return require("codecompanion.adapters").extend("ollama", {
+              schema = {
+                model = {
+                  default = "qwen2.5-coder:1.5b",
+                },
               },
-            },
-          }),
+            })
+          end,
         },
         strategies = {
           chat = { adapter = "ollama" },
@@ -146,7 +149,35 @@ return {
         },
       }
     end,
-    -- Only load when you actually use AI to save startup time
     cmd = { "CodeCompanion", "CodeCompanionChat", "CodeCompanionActions" },
+  },
+  {
+    "hrsh7th/nvim-cmp",
+    dependencies = {
+      {
+        "tzachar/cmp-ai",
+        config = function()
+          local cmp_ai = require "cmp_ai.config"
+          cmp_ai:setup {
+            max_lines = 100,
+            provider = "Ollama",
+            provider_options = {
+              model = "qwen2.5-coder:1.5b", -- Pull this model for fast ghost text
+            },
+            notify = true,
+            run_on_every_keystroke = true,
+          }
+        end,
+      },
+    },
+    opts = function(_, opts)
+      -- Add the AI source to the existing NvChad sources
+      table.insert(opts.sources, { name = "cmp_ai" })
+
+      -- Enable Ghost Text (Copilot style)
+      opts.experimental = {
+        ghost_text = true,
+      }
+    end,
   },
 }

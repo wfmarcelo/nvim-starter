@@ -55,7 +55,33 @@ return {
       return require "configs.mason"
     end,
   },
-  { "seblyng/roslyn.nvim", ft = { "cs", "razor", "aspnetcorerazor" } }, -- Removed lazy=false (ft is enough)
+  {
+    "seblyng/roslyn.nvim",
+    ft = { "cs", "razor", "cshtml" },
+    config = function()
+      require("roslyn").setup {
+        args = {
+          "--logLevel=Information",
+          "--extensionLogDirectory=" .. vim.fs.dirname(vim.lsp.get_log_path()),
+          "--stdio",
+        },
+        config = {
+          -- Aumenta o timeout para evitar o erro de LSP timeout
+          timeout = 10000,
+          on_attach = function(client, bufnr)
+            -- Desativa o Signature Help para evitar o erro de desserialização
+            client.server_capabilities.signatureHelpProvider = nil
+          end,
+          settings = {
+            ["razor"] = {
+              -- Desabilita algumas funções automáticas que pesam no CSHTML
+              formatOnType = false,
+            },
+          },
+        },
+      }
+    end,
+  },
   { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate", opts = require "configs.treesitter" },
   {
     "aklt/plantuml-syntax",

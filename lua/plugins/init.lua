@@ -148,33 +148,57 @@ return {
 
   -- 6. IA
   {
-    "olimorris/codecompanion.nvim",
-    event = "VeryLazy",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
-    },
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
     config = function()
-      require("codecompanion").setup {
-        adapters = {
-          -- We define the adapter directly to avoid the .use() nil error
-          ollama = function()
-            return require("codecompanion.adapters").extend("ollama", {
-              schema = {
-                model = {
-                  default = "qwen2.5-coder:1.5b",
-                },
-              },
-            })
-          end,
-        },
-        strategies = {
-          chat = { adapter = "ollama" },
-          inline = { adapter = "ollama" },
-          agent = { adapter = "ollama" },
-        },
+      require("copilot").setup {
+        suggestion = { enabled = false },
+        panel = { enabled = false },
       }
     end,
-    cmd = { "CodeCompanion", "CodeCompanionChat", "CodeCompanionActions" },
+  },
+  {
+    "yetone/avante.nvim",
+    event = "VeryLazy",
+    lazy = false,
+    version = false, -- set this to "*" to keep up to date, or false to use the latest code
+    opts = function()
+      return require "configs.avante"
+    end,
+    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+    build = "make",
+    dependencies = {
+      "stevearc/dressing.nvim",
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      "zbirenbaum/copilot.lua", -- if you want to use copilot.lua
+      {
+        -- support for image pasting
+        "HakonHarnes/img-clip.nvim",
+        event = "VeryLazy",
+        opts = {
+          -- recommended settings
+          default = {
+            embed_image_as_base64 = false,
+            prompt_for_file_name = false,
+            drag_and_drop = {
+              insert_mode = true,
+            },
+            -- required for Windows users
+            use_absolute_path = true,
+          },
+        },
+      },
+      {
+        -- Make sure to set this up properly if you have lazy=true
+        "MeanderingProgrammer/render-markdown.nvim",
+        opts = {
+          file_types = { "markdown", "Avante" },
+        },
+        ft = { "markdown", "Avante" },
+      },
+    },
+    cmd = { "Avante", "AvanteChat", "AvanteChatActions" },
   },
 }

@@ -19,27 +19,12 @@ dap.configurations.cs = {
     program = function()
       return require("dap-dll-autopicker").build_dll_path()
     end,
-
-    -- justMyCode = false,
-    -- stopAtEntry = false,
-    -- -- program = function()
-    -- --   -- todo: request input from ui
-    -- --   return "/path/to/your.dll"
-    -- -- end,
-    -- env = {
-    --   ASPNETCORE_ENVIRONMENT = function()
-    --     -- todo: request input from ui
-    --     return "Development"
-    --   end,
-    --   ASPNETCORE_URLS = function()
-    --     -- todo: request input from ui
-    --     return "http://localhost:5050"
-    --   end,
-    -- },
-    -- cwd = function()
-    --   -- todo: request input from ui
-    --   return vim.fn.getcwd()
-    -- end,
+  },
+  {
+    type = "coreclr",
+    name = "attach - netcoredbg",
+    request = "attach",
+    processId = require("dap.utils").pick_process,
   },
 }
 

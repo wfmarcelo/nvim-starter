@@ -10,12 +10,10 @@ local options = {
   },
   formatters = {
     sql_formatter = {
-      -- Adiciona os argumentos para o executável
-      prepend_args = { "-c", '{"language": "tsql", "keywordCase": "upper"}' },
+      prepend_args = { "-c", '{"language": "tsql", "keywordCase": "UPPER"}' },
     },
   },
   format_on_save = {
-    -- These options will be passed to conform.format()
     timeout_ms = 1000,
     lsp_fallback = true,
   },

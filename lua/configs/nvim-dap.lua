@@ -17,7 +17,21 @@ dap.configurations.cs = {
     name = "launch - netcoredbg",
     request = "launch",
     program = function()
-      return require("dap-dll-autopicker").build_dll_path()
+      return coroutine.create(function(dap_run_co)
+        print "Building project..."
+        vim.fn.jobstart("dotnet build -c Debug", {
+          on_exit = function(_, code)
+            if code == 0 then
+              print "Build successful! Starting debugger..."
+              local dll_path = require("dap-dll-autopicker").build_dll_path()
+              coroutine.resume(dap_run_co, dll_path)
+            else
+              print "Build failed!"
+              coroutine.resume(dap_run_co, nil)
+            end
+          end,
+        })
+      end)
     end,
   },
   {

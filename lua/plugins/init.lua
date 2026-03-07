@@ -201,4 +201,10 @@ return {
     },
     cmd = { "Avante", "AvanteChat", "AvanteChatActions" },
   },
+  {
+    "marcinjahn/gemini-cli.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    cmd = { "Gemini" },
+    opts = {},
+  },
 }

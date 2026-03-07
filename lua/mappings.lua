@@ -124,3 +124,8 @@ map("v", "<leader>aa", "<cmd>AvanteAsk<cr>", { desc = "AI: Avante Ask (Selection
 map("n", "<leader>at", "<cmd>AvanteChat<cr>", { desc = "AI: Avante Chat" })
 map("n", "<leader>ae", "<cmd>AvanteEdit<cr>", { desc = "AI: Avante Edit" })
 
+-- AI: Gemini CLI
+map("n", "<leader>gg", "<cmd>Gemini toggle<cr>", { desc = "AI: Toggle Gemini CLI" })
+map("n", "<leader>ga", "<cmd>Gemini add_file<cr>", { desc = "AI: Add current file to Gemini" })
+map("n", "<leader>gd", "<cmd>Gemini diagnostics<cr>", { desc = "AI: Send diagnostics to Gemini" })
+

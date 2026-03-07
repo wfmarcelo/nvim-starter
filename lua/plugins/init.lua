@@ -17,6 +17,15 @@ return {
       require("guess-indent").setup {}
     end,
   },
+  {
+    "folke/snacks.nvim",
+    priority = 1000,
+    lazy = false,
+    opts = {
+      terminal = { enabled = true },
+      picker = { enabled = true },
+    },
+  },
   { "stevearc/conform.nvim", opts = require "configs.conform" },
   { "folke/lazydev.nvim", ft = "lua", opts = { library = { { path = "${3rd}/luv/library", words = { "vim%.uv" } } } } },
   {
@@ -203,7 +212,7 @@ return {
   },
   {
     "marcinjahn/gemini-cli.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
+    dependencies = { "nvim-lua/plenary.nvim", "folke/snacks.nvim" },
     cmd = { "Gemini" },
     opts = {},
   },

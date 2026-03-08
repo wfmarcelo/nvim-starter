@@ -19,3 +19,7 @@ This repository contains a modular Neovim configuration based on NvChad, but hea
 ## Coding Style
 - Follow Lua best practices for Neovim (using `vim.api`, `vim.keymap`, etc.).
 - Keep plugin configurations modular in `lua/configs/`.
+
+## Commit Guidelines
+- Use **Conventional Commits** (e.g., `feat:`, `fix:`, `docs:`, `chore:`).
+- Messages must be **descriptive**: explain the *why* and *how* behind the change, providing technical context when necessary, rather than just stating what was modified.

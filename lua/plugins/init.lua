@@ -162,8 +162,25 @@ return {
     event = "InsertEnter",
     config = function()
       require("copilot").setup {
-        suggestion = { enabled = false },
+        -- Ativamos as sugestões para o "Ghost Text"
+        suggestion = {
+          enabled = true,
+          auto_trigger = true, -- Sugere enquanto você digita
+          keymap = {
+            accept = "<M-l>", -- Alt + l para aceitar a sugestão
+            next = "<M-]>",
+            prev = "<M-[>",
+            dismiss = "<C-]>",
+          },
+        },
         panel = { enabled = false },
+        filetypes = {
+          markdown = true, -- Garante que funcione em .md
+          help = false,
+          gitcommit = true,
+          -- Desative em arquivos onde você não quer IA "atrapalhando"
+          ["*"] = true, 
+        },
       }
     end,
   },

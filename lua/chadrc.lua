@@ -6,9 +6,8 @@
 local M = {}
 
 M.base46 = {
-
   theme = "chadracula-evondev",
-
+  integrations = { "kitty" },
   hl_override = {
     Type = { bold = true, italic = false },
     ["@comment"] = { italic = true },

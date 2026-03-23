@@ -19,6 +19,13 @@ local options = {
     "json-lsp",
     "rust-analyzer",
 
+    "jq",
+    "ruff",
+    "sql-formatter",
+    "netcoredbg",
+    "ripgrep",
+    "fd",
+
     -- !
     "roslyn",
     "razor",

@@ -130,7 +130,5 @@ map("n", "<leader>ga", "<cmd>Gemini add_file<cr>", { desc = "AI: Add current fil
 map("n", "<leader>gd", "<cmd>Gemini diagnostics<cr>", { desc = "AI: Send diagnostics to Gemini" })
 
 -- AI: Aider Chat
-map("n", "<leader>ai", function()
-  require("nvchad.term").toggle { pos = "float", id = "aider", cmd = "aider --model ollama/qwen2.5-coder:7b" }
-end, { desc = "AI: Aider Chat" })
+map("n", "<leader>ai", "<cmd>Aider toggle<cr>", { desc = "AI: Aider Chat" })
 

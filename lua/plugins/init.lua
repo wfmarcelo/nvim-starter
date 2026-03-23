@@ -233,4 +233,38 @@ return {
     cmd = { "Gemini" },
     opts = {},
   },
+  {
+    "GeorgesAlkhouri/nvim-aider",
+    cmd = { "Aider", "AiderToggle" },
+    keys = {
+      { "<leader>a/", "<cmd>Aider toggle<cr>", desc = "AI: Toggle Aider" },
+      { "<leader>as", "<cmd>Aider send<cr>", desc = "AI: Send to Aider", mode = { "n", "v" } },
+      { "<leader>ac", "<cmd>Aider command<cr>", desc = "AI: Aider Commands" },
+      { "<leader>ab", "<cmd>Aider buffer<cr>", desc = "AI: Send Buffer" },
+      { "<leader>a+", "<cmd>Aider add<cr>", desc = "AI: Add File" },
+      { "<leader>a-", "<cmd>Aider drop<cr>", desc = "AI: Drop File" },
+      { "<leader>ar", "<cmd>Aider add readonly<cr>", desc = "AI: Add Read-Only" },
+      { "<leader>aR", "<cmd>Aider reset<cr>", desc = "AI: Reset Session" },
+    },
+    dependencies = {
+      "folke/snacks.nvim",
+      -- optional dependencies
+      "catppuccin/nvim",
+    },
+    config = function()
+      require("nvim_aider").setup {
+        args = {
+          "--model",
+          "ollama/qwen2.5-coder:7b",
+          "--no-auto-commits",
+          "--pretty",
+          "--stream",
+        },
+        win = {
+          style = "nvim_aider",
+          position = "right",
+        },
+      }
+    end,
+  },
 }

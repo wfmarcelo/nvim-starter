@@ -5,6 +5,9 @@ M.current_model = "ollama/qwen2.5-coder:7b"
 M.gemini_api_key = nil
 
 function M.setup()
+  -- Disable litellm retries to avoid extra requests on 503 errors
+  vim.env.LITELLM_MAX_RETRIES = "0"
+
   -- If it's a Gemini model, ensure the key is in the environment
   if M.current_model:match "^gemini/" then
     local env_key = vim.env.GEMINI_API_KEY
@@ -59,10 +62,12 @@ end
 -- Function to change the model
 function M.change_model()
   local models = {
-    -- Apenas modelos que mostram RPD > 0 no seu painel
-    "gemini/gemini-3.1-flash-lite", -- 500 RPD (O melhor para refatorar muito)
-    "gemini/gemini-3-flash", -- 20 RPD
-    "gemini/gemini-2.5-flash", -- 20 RPD
+    -- Nomes EXTRAÍDOS DIRETAMENTE do seu CURL (models/ removido)
+    "gemini/gemini-3.1-flash-lite-preview", -- O de 500 RPD
+    "gemini/gemini-3-flash-preview", -- O de 20 RPD
+    "gemini/gemini-2.5-flash", -- O estável de 20 RPD
+    "gemini/gemini-2.0-flash", -- Verifique se este funciona (Unlimited?)
+    "gemini/gemini-flash-lite-latest",
     "OTHER (Type custom model name)",
   }
 
@@ -78,10 +83,11 @@ function M.change_model()
 
   -- Use picker to select
   vim.ui.select(models, {
-    prompt = "Select Aider Model (Based on your active limits):",
+    prompt = "Select Aider Model (VERIFIED NAMES):",
     format_item = function(item)
-      if item:match "3.1-flash-lite" then return "󰚩 " .. item .. " (RECOMMENDED - 500 RPD)" end
-      if item:match "3-flash" or item:match "2.5-flash" then return "  " .. item .. " (Limit: 20 RPD)" end
+      if item:match "3.1-flash-lite-preview" then return "󰚩 " .. item .. " (500 RPD - USE ESTE)" end
+      if item:match "3-flash-preview" then return "  " .. item .. " (20 RPD)" end
+      if item:match "^gemini/" then return "  " .. item end
       if item:match "^ollama/" then return "󱚣 " .. item end
       return "✎  " .. item
     end,
@@ -89,7 +95,7 @@ function M.change_model()
     if not choice then return end
 
     if choice == "OTHER (Type custom model name)" then
-      vim.ui.input({ prompt = "Enter model name (ex: gemini/gemini-3.1-flash-lite): " }, function(input)
+      vim.ui.input({ prompt = "Enter model name (from your curl list): " }, function(input)
         if input and input ~= "" then
           M.apply_model(input)
         end

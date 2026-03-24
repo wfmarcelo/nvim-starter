@@ -4,6 +4,22 @@ local M = {}
 M.current_model = "ollama/qwen2.5-coder:7b"
 M.gemini_api_key = nil
 
+-- Cache GPU detection
+local has_gpu = nil
+local function check_gpu()
+  if has_gpu == nil then
+    local handle = io.popen "command -v nvidia-smi > /dev/null 2>&1 && nvidia-smi -L 2>/dev/null"
+    if handle then
+      local result = handle:read "*a"
+      handle:close()
+      has_gpu = (result ~= "")
+    else
+      has_gpu = false
+    end
+  end
+  return has_gpu
+end
+
 function M.setup()
   -- Disable litellm retries to avoid extra requests on 503 errors
   vim.env.LITELLM_MAX_RETRIES = "0"
@@ -11,7 +27,7 @@ function M.setup()
   -- If it's a Gemini model, ensure the key is in the environment
   if M.current_model:match "^gemini/" then
     local env_key = vim.env.GEMINI_API_KEY
-    
+
     if M.gemini_api_key then
       vim.env.GEMINI_API_KEY = M.gemini_api_key
     elseif env_key and env_key ~= "" then
@@ -24,19 +40,36 @@ function M.setup()
     end
   end
 
+  local is_gpu = check_gpu()
+
+  local args = {
+    "--model",
+    M.current_model,
+    "--no-auto-commits",
+    "--pretty",
+    "--stream",
+  }
+
+  -- If it's a Gemini model, enable prompt caching
+  if M.current_model:match "^gemini/" then
+    table.insert(args, "--cache-prompts")
+  end
+
+  if not is_gpu then
+    -- Performance optimizations for CPU-only machines (work computer)
+    table.insert(args, "--map-tokens")
+    table.insert(args, "256")
+    table.insert(args, "--no-attribute-author")
+    table.insert(args, "--no-attribute-committer")
+  else
+    -- High-performance settings for GPU machines (current computer)
+    -- We leave map-tokens at default (1024) or could set it higher
+    table.insert(args, "--map-tokens")
+    table.insert(args, "1024")
+  end
+
   require("nvim_aider").setup {
-    args = {
-      "--model",
-      M.current_model,
-      "--no-auto-commits",
-      "--pretty",
-      "--stream",
-      -- Performance optimizations for large repos and CPU
-      "--map-tokens",
-      "256",
-      "--no-attribute-author",
-      "--no-attribute-committer",
-    },
+    args = args,
     win = {
       style = "nvim_aider",
       position = "right",

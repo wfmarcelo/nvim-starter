@@ -245,6 +245,13 @@ return {
       { "<leader>a-", "<cmd>Aider drop<cr>", desc = "AI: Drop File" },
       { "<leader>ar", "<cmd>Aider add readonly<cr>", desc = "AI: Add Read-Only" },
       { "<leader>aR", "<cmd>Aider reset<cr>", desc = "AI: Reset Session" },
+      {
+        "<leader>am",
+        function()
+          require("configs.aider").change_model()
+        end,
+        desc = "AI: Change Aider Model",
+      },
     },
     dependencies = {
       "folke/snacks.nvim",
@@ -252,19 +259,7 @@ return {
       "catppuccin/nvim",
     },
     config = function()
-      require("nvim_aider").setup {
-        args = {
-          "--model",
-          "ollama/qwen2.5-coder:7b",
-          "--no-auto-commits",
-          "--pretty",
-          "--stream",
-        },
-        win = {
-          style = "nvim_aider",
-          position = "right",
-        },
-      }
+      require("configs.aider").setup()
     end,
   },
 }

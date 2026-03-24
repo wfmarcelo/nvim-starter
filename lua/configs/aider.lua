@@ -2,8 +2,25 @@ local M = {}
 
 -- Initial default model
 M.current_model = "ollama/qwen2.5-coder:7b"
+M.gemini_api_key = nil
 
 function M.setup()
+  -- If it's a Gemini model, ensure the key is in the environment
+  if M.current_model:match "^gemini/" then
+    local env_key = vim.env.GEMINI_API_KEY
+    
+    if M.gemini_api_key then
+      vim.env.GEMINI_API_KEY = M.gemini_api_key
+    elseif env_key and env_key ~= "" then
+      M.gemini_api_key = env_key
+    else
+      M.ask_gemini_key(function()
+        M.setup()
+      end)
+      return
+    end
+  end
+
   require("nvim_aider").setup {
     args = {
       "--model",
@@ -11,6 +28,11 @@ function M.setup()
       "--no-auto-commits",
       "--pretty",
       "--stream",
+      -- Performance optimizations for large repos and CPU
+      "--map-tokens",
+      "256",
+      "--no-attribute-author",
+      "--no-attribute-committer",
     },
     win = {
       style = "nvim_aider",
@@ -19,46 +41,81 @@ function M.setup()
   }
 end
 
--- Function to change the model
-function M.change_model()
-  -- Try to get the list of Ollama models
-  local handle = io.popen "ollama list | awk '{if(NR>1) print $1}'"
-  if not handle then
-    vim.notify("Could not list Ollama models", vim.log.levels.ERROR)
-    return
-  end
-
-  local result = handle:read "*a"
-  handle:close()
-
-  local models = {}
-  for model in result:gmatch "[^\r\n]+" do
-    table.insert(models, "ollama/" .. model)
-  end
-
-  -- If no Ollama models are found, offer a basic manual list or inform the user
-  if #models == 0 then
-    models = { "gpt-4o", "gpt-4-turbo", "claude-3-5-sonnet-20240620" }
-    vim.notify("No Ollama models found. Showing common cloud models instead.", vim.log.levels.WARN)
-  end
-
-  -- Use vim.ui.select (which usually uses Snacks or Telescope if configured)
-  vim.ui.select(models, {
-    prompt = "Select Aider Model:",
-    format_item = function(item)
-      return "󱚣 " .. item
-    end,
-  }, function(choice)
-    if choice then
-      M.current_model = choice
-      -- Reconfigure aider with the new model
-      M.setup()
-      vim.notify("Aider configured to: " .. choice, vim.log.levels.INFO)
-      
-      -- Notify that Aider needs to be restarted if already running
-      vim.notify("Restart Aider (<leader>aR) to apply the new model.", vim.log.levels.WARN)
+-- Helper to ask for Gemini API Key
+function M.ask_gemini_key(callback)
+  vim.ui.input({ prompt = "Enter your GEMINI_API_KEY: ", secret = true }, function(input)
+    if input and input ~= "" then
+      M.gemini_api_key = input
+      vim.env.GEMINI_API_KEY = input
+      if callback then
+        callback()
+      end
+    else
+      vim.notify("Gemini API Key is required for this model.", vim.log.levels.ERROR)
     end
   end)
+end
+
+-- Function to change the model
+function M.change_model()
+  local models = {
+    -- Apenas modelos que mostram RPD > 0 no seu painel
+    "gemini/gemini-3.1-flash-lite", -- 500 RPD (O melhor para refatorar muito)
+    "gemini/gemini-3-flash", -- 20 RPD
+    "gemini/gemini-2.5-flash", -- 20 RPD
+    "OTHER (Type custom model name)",
+  }
+
+  -- Try to get Ollama models
+  local handle = io.popen "ollama list | awk '{if(NR>1) print $1}'"
+  if handle then
+    local result = handle:read "*a"
+    handle:close()
+    for model in result:gmatch "[^\r\n]+" do
+      table.insert(models, "ollama/" .. model)
+    end
+  end
+
+  -- Use picker to select
+  vim.ui.select(models, {
+    prompt = "Select Aider Model (Based on your active limits):",
+    format_item = function(item)
+      if item:match "3.1-flash-lite" then return "󰚩 " .. item .. " (RECOMMENDED - 500 RPD)" end
+      if item:match "3-flash" or item:match "2.5-flash" then return "  " .. item .. " (Limit: 20 RPD)" end
+      if item:match "^ollama/" then return "󱚣 " .. item end
+      return "✎  " .. item
+    end,
+  }, function(choice)
+    if not choice then return end
+
+    if choice == "OTHER (Type custom model name)" then
+      vim.ui.input({ prompt = "Enter model name (ex: gemini/gemini-3.1-flash-lite): " }, function(input)
+        if input and input ~= "" then
+          M.apply_model(input)
+        end
+      end)
+    else
+      -- Limpa a descrição extra da string de escolha
+      local actual_model = choice:match("^([^ ]+)")
+      M.apply_model(actual_model)
+    end
+  end)
+end
+
+function M.apply_model(choice)
+  M.current_model = choice
+  local has_key = (M.gemini_api_key ~= nil) or (vim.env.GEMINI_API_KEY ~= nil and vim.env.GEMINI_API_KEY ~= "")
+  
+  if choice:match "^gemini/" and not has_key then
+    M.ask_gemini_key(function()
+      M.setup()
+      vim.notify("Aider configured to: " .. choice, vim.log.levels.INFO)
+    end)
+  else
+    M.setup()
+    vim.notify("Aider configured to: " .. choice, vim.log.levels.INFO)
+  end
+  vim.notify("Restart Aider (<leader>aR) to apply the new model.", vim.log.levels.WARN)
 end
 
 return M

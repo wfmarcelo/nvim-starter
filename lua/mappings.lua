@@ -128,6 +128,9 @@ map("n", "<leader>ae", "<cmd>AvanteEdit<cr>", { desc = "AI: Avante Edit" })
 map("n", "<leader>gg", "<cmd>Gemini toggle<cr>", { desc = "AI: Toggle Gemini CLI" })
 map("n", "<leader>ga", "<cmd>Gemini add_file<cr>", { desc = "AI: Add current file to Gemini" })
 map("n", "<leader>gd", "<cmd>Gemini diagnostics<cr>", { desc = "AI: Send diagnostics to Gemini" })
+map("n", "<leader>gm", function()
+  require("configs.gemini").change_model()
+end, { desc = "AI: Change Gemini Model" })
 
 -- AI: Aider Chat
 map("n", "<leader>ai", "<cmd>Aider toggle<cr>", { desc = "AI: Aider Chat" })

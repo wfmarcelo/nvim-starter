@@ -179,7 +179,7 @@ return {
           help = false,
           gitcommit = true,
           -- Desative em arquivos onde você não quer IA "atrapalhando"
-          ["*"] = true, 
+          ["*"] = true,
         },
       }
     end,

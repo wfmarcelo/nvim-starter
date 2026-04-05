@@ -42,3 +42,8 @@ dap.configurations.cs = {
   },
 }
 
+-- Replicate C# configurations for Razor files
+dap.configurations.razor = dap.configurations.cs
+dap.configurations.cshtml = dap.configurations.cs
+dap.configurations.aspnetcorerazor = dap.configurations.cs
+

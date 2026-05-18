@@ -71,8 +71,11 @@ return {
       require("roslyn").setup {
         args = {
           "--logLevel=Information",
-          "--extensionLogDirectory=" .. vim.fs.dirname(vim.lsp.get_log_path()),
+          "--extensionLogDirectory=" .. vim.fs.dirname(vim.lsp.log.get_filename()),
           "--stdio",
+        },
+        extensions = {
+          razor = { enabled = false },
         },
         config = {
           -- Aumenta o timeout para evitar o erro de LSP timeout

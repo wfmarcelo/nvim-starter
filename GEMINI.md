@@ -1,4 +1,4 @@
-# Neovim Configuration (NVC) Antigravity Agent Context
+# Neovim Configuration (NVC) Agent Context
 
 This repository contains a modular Neovim configuration based on NvChad, but heavily customized for C#, Python, and AI-assisted development.
 
@@ -13,8 +13,7 @@ This repository contains a modular Neovim configuration based on NvChad, but hea
 ## Key Technologies & Plugins
 - **AI-Assisted Development:**
   - **Avante.nvim:** For AI-assisted code editing and chat.
-  - **Antigravity CLI:** For full agentic coding powers, reading this context from `.antigravity.md`.
-  - **Gemini-cli.nvim:** Legacy plugin for agentic powers directly in Neovim.
+  - **Gemini-cli.nvim:** For full agentic powers directly in Neovim.
 - **LSP & Formatting:**
   - **LSPConfig & Mason:** LSP management.
   - **Roslyn.nvim:** Specific support for C#.

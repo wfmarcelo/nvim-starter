@@ -234,7 +234,9 @@ return {
     "marcinjahn/gemini-cli.nvim",
     dependencies = { "nvim-lua/plenary.nvim", "folke/snacks.nvim" },
     cmd = { "Gemini" },
-    opts = {},
+    opts = {
+      gemini_cmd = "agy",
+    },
   },
   {
     "GeorgesAlkhouri/nvim-aider",

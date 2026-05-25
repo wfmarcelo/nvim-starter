@@ -1,8 +1,9 @@
 local M = {}
 
--- Initial default model
-M.current_model = "ollama/qwen2.5-coder:7b"
+-- Initial default model and state
+M.current_model = "gemini/gemini-3.1-flash-lite-preview"
 M.gemini_api_key = nil
+M.lite_mode = false -- New: State for Lite Mode
 
 -- Cache GPU detection
 local has_gpu = nil
@@ -55,15 +56,20 @@ function M.setup()
     table.insert(args, "--cache-prompts")
   end
 
-  if not is_gpu then
-    -- Performance optimizations for CPU-only machines (work computer)
+  -- LITE MODE / GPU OPTIMIZATION LOGIC
+  if M.lite_mode then
+    -- Ultra-light: No repo map, no extra analysis
+    table.insert(args, "--map-tokens")
+    table.insert(args, "0")
+    table.insert(args, "--no-suggest-shell-commands")
+  elseif not is_gpu then
+    -- Standard CPU optimization
     table.insert(args, "--map-tokens")
     table.insert(args, "256")
     table.insert(args, "--no-attribute-author")
     table.insert(args, "--no-attribute-committer")
   else
-    -- High-performance settings for GPU machines (current computer)
-    -- We leave map-tokens at default (1024) or could set it higher
+    -- High-performance settings for GPU
     table.insert(args, "--map-tokens")
     table.insert(args, "1024")
   end
@@ -92,14 +98,25 @@ function M.ask_gemini_key(callback)
   end)
 end
 
+-- Function to toggle Lite Mode
+function M.toggle_lite_mode()
+  M.lite_mode = not M.lite_mode
+  local status = M.lite_mode and "ENABLED (Map Tokens: 0)" or "DISABLED"
+  
+  -- Apply changes
+  M.setup()
+  
+  vim.notify("Aider Lite Mode: " .. status, vim.log.levels.INFO)
+  vim.notify("Restart Aider (<leader>aR) to apply changes.", vim.log.levels.WARN)
+end
+
 -- Function to change the model
 function M.change_model()
   local models = {
-    -- Nomes EXTRAÍDOS DIRETAMENTE do seu CURL (models/ removido)
-    "gemini/gemini-3.1-flash-lite-preview", -- O de 500 RPD
-    "gemini/gemini-3-flash-preview", -- O de 20 RPD
-    "gemini/gemini-2.5-flash", -- O estável de 20 RPD
-    "gemini/gemini-2.0-flash", -- Verifique se este funciona (Unlimited?)
+    "gemini/gemini-3.1-flash-lite-preview",
+    "gemini/gemini-3-flash-preview",
+    "gemini/gemini-2.5-flash",
+    "gemini/gemini-2.0-flash",
     "gemini/gemini-flash-lite-latest",
     "OTHER (Type custom model name)",
   }
@@ -116,10 +133,9 @@ function M.change_model()
 
   -- Use picker to select
   vim.ui.select(models, {
-    prompt = "Select Aider Model (VERIFIED NAMES):",
+    prompt = "Select Aider Model:",
     format_item = function(item)
       if item:match "3.1-flash-lite-preview" then return "󰚩 " .. item .. " (500 RPD - USE ESTE)" end
-      if item:match "3-flash-preview" then return "  " .. item .. " (20 RPD)" end
       if item:match "^gemini/" then return "  " .. item end
       if item:match "^ollama/" then return "󱚣 " .. item end
       return "✎  " .. item
@@ -128,13 +144,12 @@ function M.change_model()
     if not choice then return end
 
     if choice == "OTHER (Type custom model name)" then
-      vim.ui.input({ prompt = "Enter model name (from your curl list): " }, function(input)
+      vim.ui.input({ prompt = "Enter model name: " }, function(input)
         if input and input ~= "" then
           M.apply_model(input)
         end
       end)
     else
-      -- Limpa a descrição extra da string de escolha
       local actual_model = choice:match("^([^ ]+)")
       M.apply_model(actual_model)
     end
@@ -143,17 +158,8 @@ end
 
 function M.apply_model(choice)
   M.current_model = choice
-  local has_key = (M.gemini_api_key ~= nil) or (vim.env.GEMINI_API_KEY ~= nil and vim.env.GEMINI_API_KEY ~= "")
-  
-  if choice:match "^gemini/" and not has_key then
-    M.ask_gemini_key(function()
-      M.setup()
-      vim.notify("Aider configured to: " .. choice, vim.log.levels.INFO)
-    end)
-  else
-    M.setup()
-    vim.notify("Aider configured to: " .. choice, vim.log.levels.INFO)
-  end
+  M.setup()
+  vim.notify("Aider configured to: " .. choice, vim.log.levels.INFO)
   vim.notify("Restart Aider (<leader>aR) to apply the new model.", vim.log.levels.WARN)
 end
 

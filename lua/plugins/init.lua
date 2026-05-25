@@ -65,36 +65,6 @@ return {
     end,
   },
 
-  -- {
-  --   "seblyng/roslyn.nvim",
-  --   ft = { "cs", "razor", "cshtml" },
-  --   config = function()
-  --     require("roslyn").setup {
-  --       args = {
-  --         "--logLevel=Information",
-  --         "--extensionLogDirectory=" .. vim.fs.dirname(vim.lsp.log.get_filename()),
-  --         "--stdio",
-  --       },
-  --       extensions = {
-  --         razor = { enabled = false },
-  --       },
-  --       config = {
-  --         -- Aumenta o timeout para evitar o erro de LSP timeout
-  --         timeout = 10000,
-  --         on_attach = function(client, bufnr)
-  --           -- Desativa o Signature Help para evitar o erro de desserialização
-  --           client.server_capabilities.signatureHelpProvider = nil
-  --         end,
-  --         settings = {
-  --           ["razor"] = {
-  --             -- Desabilita algumas funções automáticas que pesam no CSHTML
-  --             formatOnType = false,
-  --           },
-  --         },
-  --       },
-  --     }
-  --   end,
-  -- },
   { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate", opts = require "configs.treesitter" },
   {
     "aklt/plantuml-syntax",
@@ -188,55 +158,6 @@ return {
       }
     end,
   },
-  -- {
-  --   "yetone/avante.nvim",
-  --   event = "VeryLazy",
-  --   lazy = false,
-  --   version = false, -- set this to "*" to keep up to date, or false to use the latest code
-  --   opts = function()
-  --     return require "configs.avante"
-  --   end,
-  --   -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
-  --   build = "make",
-  --   dependencies = {
-  --     "stevearc/dressing.nvim",
-  --     "nvim-lua/plenary.nvim",
-  --     "MunifTanjim/nui.nvim",
-  --     "zbirenbaum/copilot.lua", -- if you want to use copilot.lua
-  --     {
-  --       -- support for image pasting
-  --       "HakonHarnes/img-clip.nvim",
-  --       event = "VeryLazy",
-  --       opts = {
-  --         -- recommended settings
-  --         default = {
-  --           embed_image_as_base64 = false,
-  --           prompt_for_file_name = false,
-  --           drag_and_drop = {
-  --             insert_mode = true,
-  --           },
-  --           -- required for Windows users
-  --           use_absolute_path = true,
-  --         },
-  --       },
-  --     },
-  --     {
-  --       -- Make sure to set this up properly if you have lazy=true
-  --       "MeanderingProgrammer/render-markdown.nvim",
-  --       opts = {
-  --         file_types = { "markdown", "Avante" },
-  --       },
-  --       ft = { "markdown", "Avante" },
-  --     },
-  --   },
-  --   cmd = { "Avante", "AvanteChat", "AvanteChatActions" },
-  -- },
-  -- {
-  --   "marcinjahn/gemini-cli.nvim",
-  --   dependencies = { "nvim-lua/plenary.nvim", "folke/snacks.nvim" },
-  --   cmd = { "Gemini" },
-  --   opts = {},
-  -- },
   {
     "GeorgesAlkhouri/nvim-aider",
     cmd = { "Aider", "AiderToggle" },

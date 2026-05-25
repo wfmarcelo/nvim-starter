@@ -1,6 +1,27 @@
 return {
   -- 1. Utilities
   {
+    "nvim-telescope/telescope.nvim",
+    opts = {
+      defaults = {
+        -- Define o estilo do layout como vertical
+        layout_strategy = "vertical",
+
+        layout_config = {
+          vertical = {
+            -- Força o Telescope a ocupar praticamente 100% da tela
+            width = 0.95,
+            height = 0.95,
+
+            -- Coloca o preview no topo e a busca (prompt) embaixo
+            preview_height = 0.65, -- Altere esse valor se quiser o preview maior ou menor
+            -- mirror = true, -- O 'mirror' inverte a ordem padrão, jogando o preview para cima
+          },
+        },
+      },
+    },
+  },
+  {
     "stevearc/oil.nvim",
     opts = {},
     -- Optional dependencies

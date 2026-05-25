@@ -1,7 +1,7 @@
 local M = {}
 
 -- Initial default model and state
-M.current_model = "gemini/gemini-3.1-flash-lite-preview"
+M.current_model = "gemini/gemini-3.1-flash-lite"
 M.gemini_api_key = nil
 M.lite_mode = false -- New: State for Lite Mode
 
@@ -113,11 +113,11 @@ end
 -- Function to change the model
 function M.change_model()
   local models = {
-    "gemini/gemini-3.1-flash-lite-preview",
-    "gemini/gemini-3-flash-preview",
+    "gemini/gemini-3.5-flash",
+    "gemini/gemini-3.1-flash-lite",
+    "gemini/gemini-2.5-flash",
     "gemini/gemini-2.5-flash",
     "gemini/gemini-2.0-flash",
-    "gemini/gemini-flash-lite-latest",
     "OTHER (Type custom model name)",
   }
 

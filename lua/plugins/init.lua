@@ -151,6 +151,7 @@ return {
   },
 
   -- 6. IA
+<<<<<<< HEAD
   -- {
   --   "yetone/avante.nvim",
   --   build = "make",
@@ -211,4 +212,83 @@ return {
   --     require("configs.aider").setup()
   --   end,
   -- },
+=======
+  {
+    "yetone/avante.nvim",
+    build = "make",
+    event = "VeryLazy",
+    version = false,
+
+    opts = {
+      instructions_file = "avante.md",
+      provider = "ollama",
+      providers = {
+        ollama = {
+          model = "qwen2.5-coder:7b",
+        },
+        gemini = {
+          model = "gemini-3.1-flash-lite",
+        },
+      },
+    },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      --- The below dependencies are optional,
+      "nvim-mini/mini.pick", -- for file_selector provider mini.pick
+      "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
+      "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
+      "ibhagwan/fzf-lua", -- for file_selector provider fzf
+      "stevearc/dressing.nvim", -- for input provider dressing
+      "folke/snacks.nvim", -- for input provider snacks
+      "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+      {
+        -- support for image pasting
+        "HakonHarnes/img-clip.nvim",
+        event = "VeryLazy",
+        opts = {
+          -- recommended settings
+          default = {
+            embed_image_as_base64 = false,
+            prompt_for_file_name = false,
+            drag_and_drop = {
+              insert_mode = true,
+            },
+            -- required for Windows users
+            use_absolute_path = true,
+          },
+        },
+      },
+    },
+  },
+  {
+    "GeorgesAlkhouri/nvim-aider",
+    cmd = { "Aider", "AiderToggle" },
+    keys = {
+      { "<leader>ia", "<cmd>Aider toggle<cr>", desc = "aider: Toggle Aider" },
+      { "<leader>is", "<cmd>Aider send<cr>", desc = "aider: Send to Aider", mode = { "n", "v" } },
+      { "<leader>ic", "<cmd>Aider command<cr>", desc = "aider: Aider Commands" },
+      { "<leader>ib", "<cmd>Aider buffer<cr>", desc = "aider: Send Buffer" },
+      { "<leader>i+", "<cmd>Aider add<cr>", desc = "aider: Add File" },
+      { "<leader>i-", "<cmd>Aider drop<cr>", desc = "aider: Drop File" },
+      { "<leader>ir", "<cmd>Aider add readonly<cr>", desc = "aider: Add Read-Only" },
+      { "<leader>iR", "<cmd>Aider reset<cr>", desc = "aider: Reset Session" },
+      {
+        "<leader>im",
+        function()
+          require("configs.aider").change_model()
+        end,
+        desc = "aider: Change Aider Model",
+      },
+    },
+    dependencies = {
+      "folke/snacks.nvim",
+      -- optional dependencies
+      "catppuccin/nvim",
+    },
+    config = function()
+      require("configs.aider").setup()
+    end,
+  },
+>>>>>>> fdc2953 (configurações avante)
 }

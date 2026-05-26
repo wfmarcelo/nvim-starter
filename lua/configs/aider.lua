@@ -107,7 +107,7 @@ function M.toggle_lite_mode()
   M.setup()
   
   vim.notify("Aider Lite Mode: " .. status, vim.log.levels.INFO)
-  vim.notify("Restart Aider (<leader>aR) to apply changes.", vim.log.levels.WARN)
+  vim.notify("Restart Aider (<leader>iR) to apply changes.", vim.log.levels.WARN)
 end
 
 -- Function to change the model
@@ -115,9 +115,6 @@ function M.change_model()
   local models = {
     "gemini/gemini-3.5-flash",
     "gemini/gemini-3.1-flash-lite",
-    "gemini/gemini-2.5-flash",
-    "gemini/gemini-2.5-flash",
-    "gemini/gemini-2.0-flash",
     "OTHER (Type custom model name)",
   }
 

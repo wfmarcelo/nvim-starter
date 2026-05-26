@@ -152,32 +152,27 @@ return {
 
   -- 6. IA
   {
-    "zbirenbaum/copilot.lua",
-    cmd = "Copilot",
-    event = "InsertEnter",
-    config = function()
-      require("copilot").setup {
-        -- Ativamos as sugestões para o "Ghost Text"
-        suggestion = {
-          enabled = true,
-          auto_trigger = true, -- Sugere enquanto você digita
-          keymap = {
-            accept = "<M-l>", -- Alt + l para aceitar a sugestão
-            next = "<M-]>",
-            prev = "<M-[>",
-            dismiss = "<C-]>",
-          },
+    "yetone/avante.nvim",
+    build = "make",
+    event = "VeryLazy",
+    version = false,
+
+    opts = {
+      instructions_file = "avante.md",
+      provider = "ollama",
+      providers = {
+        ollama = {
+          model = "qwen2.5-coder:7b",
         },
-        panel = { enabled = false },
-        filetypes = {
-          markdown = true, -- Garante que funcione em .md
-          help = false,
-          gitcommit = true,
-          -- Desative em arquivos onde você não quer IA "atrapalhando"
-          ["*"] = true,
+        gemini = {
+          model = "gemini-3.1-flash-lite",
         },
-      }
-    end,
+      },
+    },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+    },
   },
   {
     "GeorgesAlkhouri/nvim-aider",
@@ -192,7 +187,7 @@ return {
       { "<leader>ar", "<cmd>Aider add readonly<cr>", desc = "AI: Add Read-Only" },
       { "<leader>aR", "<cmd>Aider reset<cr>", desc = "AI: Reset Session" },
       {
-        "<leader>am",
+        "<leader>aM",
         function()
           require("configs.aider").change_model()
         end,

@@ -151,64 +151,64 @@ return {
   },
 
   -- 6. IA
-  {
-    "yetone/avante.nvim",
-    build = "make",
-    event = "VeryLazy",
-    version = false,
-
-    opts = {
-      instructions_file = "avante.md",
-      provider = "gemini",
-      providers = {
-        ollama = {
-          model = "qwen2.5-coder:7b",
-        },
-        gemini = {
-          model = "gemini-3.1-flash-lite",
-        },
-      },
-    },
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "MunifTanjim/nui.nvim",
-      --- The below dependencies are optional,
-      "nvim-mini/mini.pick", -- for file_selector provider mini.pick
-      "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
-      "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
-      "ibhagwan/fzf-lua", -- for file_selector provider fzf
-      "stevearc/dressing.nvim", -- for input provider dressing
-      "folke/snacks.nvim", -- for input provider snacks
-      "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
-    },
-  },
-  {
-    "GeorgesAlkhouri/nvim-aider",
-    cmd = { "Aider", "AiderToggle" },
-    keys = {
-      { "<leader>a/", "<cmd>Aider toggle<cr>", desc = "AI: Toggle Aider" },
-      { "<leader>as", "<cmd>Aider send<cr>", desc = "AI: Send to Aider", mode = { "n", "v" } },
-      { "<leader>ac", "<cmd>Aider command<cr>", desc = "AI: Aider Commands" },
-      { "<leader>ab", "<cmd>Aider buffer<cr>", desc = "AI: Send Buffer" },
-      { "<leader>a+", "<cmd>Aider add<cr>", desc = "AI: Add File" },
-      { "<leader>a-", "<cmd>Aider drop<cr>", desc = "AI: Drop File" },
-      { "<leader>ar", "<cmd>Aider add readonly<cr>", desc = "AI: Add Read-Only" },
-      { "<leader>aR", "<cmd>Aider reset<cr>", desc = "AI: Reset Session" },
-      {
-        "<leader>aM",
-        function()
-          require("configs.aider").change_model()
-        end,
-        desc = "AI: Change Aider Model",
-      },
-    },
-    dependencies = {
-      "folke/snacks.nvim",
-      -- optional dependencies
-      "catppuccin/nvim",
-    },
-    config = function()
-      require("configs.aider").setup()
-    end,
-  },
+  -- {
+  --   "yetone/avante.nvim",
+  --   build = "make",
+  --   event = "VeryLazy",
+  --   version = false,
+  --
+  --   opts = {
+  --     instructions_file = "avante.md",
+  --     provider = "gemini",
+  --     providers = {
+  --       ollama = {
+  --         model = "qwen2.5-coder:3b",
+  --       },
+  --       gemini = {
+  --         model = "gemini-3.1-flash-lite",
+  --       },
+  --     },
+  --   },
+  --   dependencies = {
+  --     "nvim-lua/plenary.nvim",
+  --     "MunifTanjim/nui.nvim",
+  --     --- The below dependencies are optional,
+  --     "nvim-mini/mini.pick", -- for file_selector provider mini.pick
+  --     "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
+  --     "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
+  --     "ibhagwan/fzf-lua", -- for file_selector provider fzf
+  --     "stevearc/dressing.nvim", -- for input provider dressing
+  --     "folke/snacks.nvim", -- for input provider snacks
+  --     "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+  --   },
+  -- },
+  -- {
+  --   "GeorgesAlkhouri/nvim-aider",
+  --   cmd = { "Aider", "AiderToggle" },
+  --   keys = {
+  --     { "<leader>a/", "<cmd>Aider toggle<cr>", desc = "AI: Toggle Aider" },
+  --     { "<leader>as", "<cmd>Aider send<cr>", desc = "AI: Send to Aider", mode = { "n", "v" } },
+  --     { "<leader>ac", "<cmd>Aider command<cr>", desc = "AI: Aider Commands" },
+  --     { "<leader>ab", "<cmd>Aider buffer<cr>", desc = "AI: Send Buffer" },
+  --     { "<leader>a+", "<cmd>Aider add<cr>", desc = "AI: Add File" },
+  --     { "<leader>a-", "<cmd>Aider drop<cr>", desc = "AI: Drop File" },
+  --     { "<leader>ar", "<cmd>Aider add readonly<cr>", desc = "AI: Add Read-Only" },
+  --     { "<leader>aR", "<cmd>Aider reset<cr>", desc = "AI: Reset Session" },
+  --     {
+  --       "<leader>aM",
+  --       function()
+  --         require("configs.aider").change_model()
+  --       end,
+  --       desc = "AI: Change Aider Model",
+  --     },
+  --   },
+  --   dependencies = {
+  --     "folke/snacks.nvim",
+  --     -- optional dependencies
+  --     "catppuccin/nvim",
+  --   },
+  --   config = function()
+  --     require("configs.aider").setup()
+  --   end,
+  -- },
 }

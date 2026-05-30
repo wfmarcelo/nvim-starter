@@ -118,12 +118,4 @@ end, { desc = "PlantUML: Export to custom path" })
 
 map("n", "<leader>mp", "<cmd>MarkdownPreviewToggle<cr>", { desc = "Markdown Preview" })
 
-<<<<<<< HEAD
--- -- AI: Aider Chat
--- map("n", "<leader>ai", "<cmd>Aider toggle<cr>", { desc = "AI: Aider Chat" })
--- map("n", "<leader>al", function()
---   require("configs.aider").toggle_lite_mode()
--- end, { desc = "AI: Toggle Aider Lite Mode" })
-=======
->>>>>>> fdc2953 (configurações avante)
-
+map("t", "<Esc>", [[<C-\><C-n>]], { desc = "Sair do modo terminal"})

@@ -123,6 +123,7 @@ return {
   { "ramboe/ramboe-dotnet-utils", dependencies = { "mfussenegger/nvim-dap" } },
 
   -- 4. Testing (Neotest)
+  { "nsidorenco/neotest-vstest" },
   {
     "nvim-neotest/neotest",
     dependencies = {
